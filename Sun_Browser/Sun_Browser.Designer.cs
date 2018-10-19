@@ -30,7 +30,7 @@
         {
             this.webBrowser1 = new System.Windows.Forms.WebBrowser();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.label3 = new System.Windows.Forms.Label();
+            this.txtLog = new System.Windows.Forms.TextBox();
             this.btnSearch = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
             this.btnEnter = new System.Windows.Forms.Button();
@@ -39,7 +39,8 @@
             this.txtAddress = new System.Windows.Forms.TextBox();
             this.splitter2 = new System.Windows.Forms.Splitter();
             this.panel5 = new System.Windows.Forms.Panel();
-            this.btnGo = new System.Windows.Forms.Button();
+            this.btnHome = new System.Windows.Forms.Button();
+            this.btnForward = new System.Windows.Forms.Button();
             this.btnBack = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -63,11 +64,12 @@
             this.webBrowser1.Name = "webBrowser1";
             this.webBrowser1.Size = new System.Drawing.Size(800, 325);
             this.webBrowser1.TabIndex = 0;
+            this.webBrowser1.Navigated += new System.Windows.Forms.WebBrowserNavigatedEventHandler(this.ShowAddress);
             // 
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Controls.Add(this.label3);
+            this.panel1.Controls.Add(this.txtLog);
             this.panel1.Controls.Add(this.btnSearch);
             this.panel1.Controls.Add(this.panel3);
             this.panel1.Controls.Add(this.label2);
@@ -80,16 +82,13 @@
             this.panel1.Size = new System.Drawing.Size(800, 122);
             this.panel1.TabIndex = 1;
             // 
-            // label3
+            // txtLog
             // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label3.ForeColor = System.Drawing.Color.DimGray;
-            this.label3.Location = new System.Drawing.Point(671, 86);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(34, 17);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "주소";
+            this.txtLog.Location = new System.Drawing.Point(331, 59);
+            this.txtLog.Multiline = true;
+            this.txtLog.Name = "txtLog";
+            this.txtLog.Size = new System.Drawing.Size(441, 49);
+            this.txtLog.TabIndex = 6;
             // 
             // btnSearch
             // 
@@ -135,9 +134,9 @@
             // 
             this.panel6.Controls.Add(this.txtAddress);
             this.panel6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel6.Location = new System.Drawing.Point(106, 0);
+            this.panel6.Location = new System.Drawing.Point(167, 0);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(619, 23);
+            this.panel6.Size = new System.Drawing.Size(558, 23);
             this.panel6.TabIndex = 2;
             // 
             // txtAddress
@@ -146,12 +145,13 @@
             this.txtAddress.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtAddress.Location = new System.Drawing.Point(0, 0);
             this.txtAddress.Name = "txtAddress";
-            this.txtAddress.Size = new System.Drawing.Size(619, 21);
+            this.txtAddress.Size = new System.Drawing.Size(558, 21);
             this.txtAddress.TabIndex = 3;
+            this.txtAddress.KeyDown += new System.Windows.Forms.KeyEventHandler(this.EnterKeys);
             // 
             // splitter2
             // 
-            this.splitter2.Location = new System.Drawing.Point(103, 0);
+            this.splitter2.Location = new System.Drawing.Point(164, 0);
             this.splitter2.Name = "splitter2";
             this.splitter2.Size = new System.Drawing.Size(3, 23);
             this.splitter2.TabIndex = 1;
@@ -159,25 +159,40 @@
             // 
             // panel5
             // 
-            this.panel5.Controls.Add(this.btnGo);
+            this.panel5.Controls.Add(this.btnHome);
+            this.panel5.Controls.Add(this.btnForward);
             this.panel5.Controls.Add(this.btnBack);
             this.panel5.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel5.Location = new System.Drawing.Point(0, 0);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(103, 23);
+            this.panel5.Size = new System.Drawing.Size(164, 23);
             this.panel5.TabIndex = 0;
             // 
-            // btnGo
+            // btnHome
             // 
-            this.btnGo.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.btnGo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnGo.ForeColor = System.Drawing.Color.Black;
-            this.btnGo.Location = new System.Drawing.Point(55, 1);
-            this.btnGo.Name = "btnGo";
-            this.btnGo.Size = new System.Drawing.Size(30, 21);
-            this.btnGo.TabIndex = 6;
-            this.btnGo.Text = "->";
-            this.btnGo.UseVisualStyleBackColor = true;
+            this.btnHome.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.btnHome.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnHome.ForeColor = System.Drawing.Color.Black;
+            this.btnHome.Location = new System.Drawing.Point(91, 1);
+            this.btnHome.Name = "btnHome";
+            this.btnHome.Size = new System.Drawing.Size(53, 21);
+            this.btnHome.TabIndex = 6;
+            this.btnHome.Text = "Home";
+            this.btnHome.UseVisualStyleBackColor = true;
+            this.btnHome.Click += new System.EventHandler(this.GoHomePage);
+            // 
+            // btnForward
+            // 
+            this.btnForward.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.btnForward.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnForward.ForeColor = System.Drawing.Color.Black;
+            this.btnForward.Location = new System.Drawing.Point(55, 1);
+            this.btnForward.Name = "btnForward";
+            this.btnForward.Size = new System.Drawing.Size(30, 21);
+            this.btnForward.TabIndex = 6;
+            this.btnForward.Text = "->";
+            this.btnForward.UseVisualStyleBackColor = true;
+            this.btnForward.Click += new System.EventHandler(this.GoForwardPage);
             // 
             // btnBack
             // 
@@ -287,10 +302,11 @@
         private System.Windows.Forms.Panel panel6;
         private System.Windows.Forms.Splitter splitter2;
         private System.Windows.Forms.Panel panel5;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Button btnGo;
+        private System.Windows.Forms.Button btnForward;
         private System.Windows.Forms.Button btnBack;
         private System.Windows.Forms.Button btnEnter;
+        private System.Windows.Forms.TextBox txtLog;
+        private System.Windows.Forms.Button btnHome;
     }
 }
 
